@@ -1,0 +1,93 @@
+.logoWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #0e0b1c;
+    overflow: hidden;
+  }
+  
+  .logoText {
+    font-size: 5rem; /* ⬆️ Bigger text */
+    font-weight: 800;
+    color: #facc15;
+    letter-spacing: 0.05em;
+    display: flex;
+    gap: 0.25rem;
+    cursor: default;
+    position: relative;
+  
+    /* Animation chain */
+    animation: fadeSlideZoom 1.2s ease-out forwards, glowPulse 3s ease-in-out infinite;
+  }
+  
+  /* Hover shimmer across the full text */
+  .logoText:hover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.3) 50%,
+      transparent 100%
+    );
+    animation: shimmer 1.5s ease-in-out forwards;
+  }
+  
+  .iWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Music note animation */
+  .musicNote {
+    color: #9333ea;
+    font-size: 1.75rem;
+    margin-left: 0.25rem;
+    animation: bounceTilt 1.4s infinite ease-in-out;
+  }
+  
+  /* Animations */
+  @keyframes fadeSlideZoom {
+    0% {
+      opacity: 0;
+      transform: translateY(40px) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  @keyframes glowPulse {
+    0%, 100% {
+      text-shadow: 0 0 10px #facc15, 0 0 20px #facc15;
+    }
+    50% {
+      text-shadow: 0 0 15px #facc15, 0 0 30px #facc15;
+    }
+  }
+  
+  @keyframes bounceTilt {
+    0%, 100% {
+      transform: rotate(0deg) translateY(0);
+    }
+    50% {
+      transform: rotate(-15deg) translateY(-10px);
+    }
+  }
+  
+  @keyframes shimmer {
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 100%;
+    }
+  }
+  
