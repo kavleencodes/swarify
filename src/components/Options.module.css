@@ -1,0 +1,78 @@
+.optionsWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #0e0b1c;
+    min-height: 100vh;
+    color: #f5f5f5;
+    animation: fadeIn 0.8s ease-out;
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .heading {
+    font-size: 2.5rem;
+    color: #facc15;
+    margin-bottom: 3rem;
+    animation: slideDown 1s ease-out;
+  }
+  
+  .cardContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    max-width: 600px;
+  }
+  
+  .optionCard {
+    background-color: #1a1533;
+    border: 2px solid #2c254a;
+    padding: 2rem;
+    border-radius: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .optionCard:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 0 15px #9333ea;
+  }
+  
+  .cardText {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #f5f5f5;
+  }
+  
+  .emoji {
+    font-size: 2rem;
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes slideDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
