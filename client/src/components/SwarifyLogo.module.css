@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+
+
+.logoWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #0e0b1c;
+}
+
+.logo {
+  font-family: 'Pacifico', cursive;
+  font-size: 4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  position: relative;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
+}
+
+.swar {
+  color: #ff4f81; /* Geet Pink */
+  font-size: 8rem;
+}
+
+.ify {
+  color: #6a5acd; /* Periwinkle Purple */
+  font-size: 8rem;
+
+}
+
+/* 🎤 mic styling */
+.micWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  animation:  1.5s ease-in-out infinite;
+  font-size: 8rem;
+  margin: 0 0.3rem;
+}
+
+/* 🎶 notes coming out */
+.notes {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translateX(-50%);
+  color: #facc15;
+  font-size: 1rem;
+  animation: floatNotes 3s ease-in-out infinite;
+  white-space: pre-line;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+/* Mic bounce */
+@keyframes micBounce {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(-10deg);
+  }
+}
+
+/* Floating notes animation */
+@keyframes floatNotes {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -40px) scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -70px) scale(1.1);
+  }
+}
