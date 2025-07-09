@@ -39,6 +39,7 @@ import SwarifyLogo from './components/SwarifyLogo';
 import Options from './components/Options';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import ArtistSearch from './components/ArtistSearch';
 
 function App() {
   const [screen, setScreen] = useState('logo');
@@ -62,6 +63,9 @@ function App() {
       {screen === 'signup' && (
         <Signup onLoginClick={() => setScreen('login')} />
       )}
+
+
+      {/* <ArtistSearch/> */}
     </>
   );
 }
