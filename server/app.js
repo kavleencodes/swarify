@@ -39,7 +39,13 @@ app.use(cookieParser())
 
 
 
+//routes import 
+import userrouter from "./src/routes/user.routes.js"
 
+//roues declaration 
+// app.get when router does not get export and in the same file middleware is used
+
+app.use("/api/v1/users",userrouter)// after these all the methods are written in the routes file // method to define api 
 
 
 
