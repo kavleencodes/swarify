@@ -76,3 +76,7 @@ userSchema.methods.generateRefreshtoken=function(){// refresh token only less in
 
 }
 export default mongoose.model("User", userSchema);
+
+// now file handling not done on the server
+// file handling not done on the server what is the rate of the calculation etc
+// cloudinary is through multer . using the multer we take the files from the user and keep them on the server and then through cloudinary on the  cloud from local storage to server   
