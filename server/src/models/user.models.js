@@ -21,12 +21,21 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  avatar:{
+    type:String, // cloudinary url is to be used here 
+    required:true
+},
+coverimage:{
+    type:String
+},
   watchhistory:[
     {
         type:mongoose.Schema.Types.ObjectId,
         ref:"Song"
     }
-]
+], refreshtoken:{
+  type:String
+}
  
 }, { timestamps: true });
 
@@ -39,9 +48,10 @@ const userSchema = new mongoose.Schema({
 userSchema.pre("save",async function(next){
 
     if(!this.isModified("password")) return next();
-    this.password=bcrypt.hash(this.password,10)
+    this.password= await bcrypt.hash(this.password,10)
     next()
-})  
+}) 
+// password also takes time so the await  
 
 // save is basically the event used . do not use arrow function as we do not have the context of this in the arrow func and next important ki pass the flag next. this knows all the fields. hash needs two things -what to hash and the no of rounds. whenver the data is even edited the password will be changed everytime. change only when the password id sent
 

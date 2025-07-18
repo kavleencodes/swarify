@@ -32,5 +32,7 @@ const uploadoncloud=async(localfilepath)=>{
     }
 }    
 
+export default uploadoncloud;
+
 // multer in the middleware 
   
