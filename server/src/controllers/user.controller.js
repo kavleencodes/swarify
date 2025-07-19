@@ -9,6 +9,7 @@ import uploadoncloud from "../utils/cloudinary.js"
 
 import ApiResponse from "../utils/ApiResponse.js"
 
+
 const registeruser=asyncHandler(async(req,res)=>{
 
     //  res.status(200).json({
@@ -30,7 +31,9 @@ const registeruser=asyncHandler(async(req,res)=>{
   // 9 check for the response , user created successfully or not -return response or return error 
 
   //get user details data can be through url, form 
-  const{username, email,password }=req.body
+  const{username, email,password}=req.body;
+  console.log(req.body)
+  console.log(req.files)
 
   console.log("email", email) 
   //file handling is also be done // done in thr route importing multer 
@@ -42,7 +45,7 @@ const registeruser=asyncHandler(async(req,res)=>{
   }
 
   // now to check if user exists or not import user
-  const existeduser=User.findOne({
+  const existeduser= await User.findOne({
     $or:[{username},{email}]
 }) //check the username and email
 
@@ -50,19 +53,30 @@ if(existeduser){
     throw new ApiError(409,"username already exists ")
     
 }
-// avatar check // we need the first prop of the avatar
-const avatarlocalpath=req.files?.avatar[0]?.path// till now not on the server
 
-const coverimglocalpath=req.files?.coverimage[0]?.path// can exist or cannot 
+console.log(req.files)
+// avatar check // we need the first prop of the avatar
+// const avatarlocalpath=req.files?.avatar[0]?.path// till now not on the server
+const avatarlocalPath  = req.files?.avatar?.[0]?.path;
+
+// const coverimglocalpath=req.files?.coverimage[0]?.path// can exist or cannot
+
+const coverimglocalpath = req.files?.coverImage?.[0]?.path || "";
+
+
+// let coverimglocalpath;
+// if(req.files && Array.isArray(req.files.coverimage) && req.files.coverimage.length>0){
+//    coverimglocalpath=req.files.coverimage[0].path
+// }
 
 // check for avatar
-if(!avatarlocalpath){
+if(!avatarlocalPath){
     throw new ApiError(400,"avatar file is req!!!")
 }
 
 // now upload to cloudinary
 // import the cld file 
- const avatar=await uploadoncloud(avatarlocalpath)// this will take time so await 
+ const avatar=await uploadoncloud(avatarlocalPath)// this will take time so await 
 
  const coverimage= await uploadoncloud(coverimglocalpath)
  // again check for avatar
@@ -95,5 +109,8 @@ if(!avatarlocalpath){
  )
 // .status is the better way of sending the res
 })
+
+// if we donot send the cover image then there is undefined error check with if-else
+
 
 export {registeruser}
