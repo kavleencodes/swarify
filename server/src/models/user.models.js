@@ -82,10 +82,16 @@ userSchema.methods.generateAccesstoken=function(){
 }
 
 userSchema.methods.generateRefreshtoken=function(){// refresh token only less info
-    _id:this._id
-
-
-}
+  return jwt.sign(
+    {
+      _id: this._id,
+    },
+    process.env.REFRESH_TOKEN_SECRET,
+    {
+      expiresIn: process.env.REFRESH_TOKEN_EXPIRY || "7d", // fallback
+    }
+  );
+};
 export default mongoose.model("User", userSchema);
 
 // now file handling not done on the server

@@ -1,12 +1,14 @@
-const asyncHandler=(requesthandler)=>{
-    return (req,res,next)=>{
-        Promise.resolve(requesthandler(req,res,next)).catch((err)=>next(err))
-        // we have to return the function also 
+const asyncHandler = (requestHandler) => {
+    return (req, res, next) => {
+      Promise.resolve(requestHandler(req, res, next))
+             .catch((err) => next(err));
     }
-}// fn and func written in form of requesthandler
+  }
+  
+  export default asyncHandler;// fn and func written in form of requesthandler
 
 
-export default asyncHandler
+
 
 
 // const asyncHandler=(fn)=>async (req,res,next)=>{
