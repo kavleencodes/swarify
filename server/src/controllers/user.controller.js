@@ -10,6 +10,31 @@ import uploadoncloud from "../utils/cloudinary.js"
 import ApiResponse from "../utils/ApiResponse.js"
 
 
+const generateAccessandrefreshtokens=async(userId)=>{
+   // we have an easy access to user id 
+   try {
+     const user= await User.findById(userId)
+    const accesstoken =user.generateAccesstoken()
+     
+    
+    const refreshtoken=user.generateRefreshtoken()
+
+    // these are not beyond the methods in here only
+    // now to put the refresh token in db 
+    user.refreshtoken=refreshtoken
+    // now save it 
+     await user.save({validateBeforeSave:false})// so that it directly saves 
+
+     // now return access token and refresh token 
+     return {accesstoken,refreshtoken}
+     // this is all done in the method itself 
+
+      
+   } catch (error) {
+      throw new ApiError(500, "something went wrong ")
+   }
+}
+
 const registeruser=asyncHandler(async(req,res)=>{
 
     //  res.status(200).json({
@@ -113,4 +138,109 @@ if(!avatarlocalPath){
 // if we donot send the cover image then there is undefined error check with if-else
 
 
-export {registeruser}
+// login user
+const loginuser=asyncHandler(async (req,res)=>{
+   // steps for the login user
+   // 1 req body-> data
+   // username or email based accessed 
+   // find the user
+   // password check if not found -passw is wrong 
+   // generate both access and refresh token 
+   //send cookies  and a response 
+
+   const {email, username,password }=req.body
+
+   if(!username || !email){
+      throw new ApiError(400,"username or password is reqd!!")
+   }
+
+   // find the username or the email
+  const user =await  User.findOne({
+      $or: [{username}, {email}]
+   })
+
+   // if not found 
+   if(!user){
+      throw new ApiError (404, "user does not exist ")
+   }
+   // now check the password 
+   // bcrypt ispassword correct method 
+   const ispasswordValid=await user.isPasswordCorrect(password)
+
+
+if(!ispasswordValid){
+   throw new ApiError (404, "incorrect password  ")
+}
+
+// make the method above generate refresh and access token 
+ const {accesstoken,refreshtoken}=await generateAccessandrefreshtokens(user._id)
+
+ // now we have to send in the cookies 
+ // what do we need to send to the user cookies some unwanted fields also are here 
+ // let there ebe one db query 
+ const loggedInUser=User.findById(user._id).select("-password -refreshtoken ")
+
+ // now cookies 
+ const options={
+   httpOnly:true,
+   secure:true
+ }
+ return res
+ .status(200).$or
+ .cookie("accesstoken", accesstoken,options)
+ .cookie("refreshtoken", refreshtoken,options)
+ .json(
+   new ApiResponse(
+      200,{
+         user:loggedInUser,accesstoken,refreshtoken// when user wants to save in the server by him
+      },
+      "User logged in Successfully"
+   )
+ )
+
+ // logout 
+ const logoutUser=asyncHandler(async(req,res)=>{
+   // first remove the cookies and everything from the server and also the access and refresh token . refresh token has to be reset 
+
+   // User.findById no access to this here above it had because email, password access , solution -middlware 
+   User.findByIdAndUpdate(
+      req.user._id,
+      {
+         // now update 
+         $set:{
+            refreshtoken:undefined
+         }
+      },
+      {
+         new:true
+      }
+   )
+
+   const options={
+      httpOnly:true,
+      secure:true
+   }
+
+   return res
+   .status(200)
+   .clearCookie("accesstoken", options)
+   .clearCookie("refreshtoken", options)
+   .json(new ApiResponse(200,{},"user loggedout successfully!!!"))
+
+ })
+
+
+
+
+
+
+
+
+
+
+})
+
+
+export {registeruser,
+   loginuser
+}

@@ -33,7 +33,8 @@ coverimage:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Song"
     }
-], refreshtoken:{
+], 
+refreshtoken:{
   type:String
 }
  
@@ -56,7 +57,7 @@ userSchema.pre("save",async function(next){
 // save is basically the event used . do not use arrow function as we do not have the context of this in the arrow func and next important ki pass the flag next. this knows all the fields. hash needs two things -what to hash and the no of rounds. whenver the data is even edited the password will be changed everytime. change only when the password id sent
 
 // some (methods) can also be done . methods- is given by the schema some custom methods can also be made 
-userSchema.methods.isPasswordcorrect= async function(password){
+userSchema.methods.isPasswordCorrect= async function(password){
     return await bcrypt.compare(password,this.password)// this is true or false 
 }
 
