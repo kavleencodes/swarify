@@ -213,6 +213,80 @@ const refreshaccesstoken=asyncHandler(async(req,res)=>{
       
 })
 
+
+// update and the other functions 
+const changecurrentpassword=asyncHandler(async(req,res)=>{
+    const {oldpassword,newpassword}=req.body// write the confirmpassword with new pass
+
+    // if(newpassword!==confpassword){
+    //     throw new ApiError(400,"password does not match!")
+    // }
+
+    // if the person is able to cheange the passwords he/she is logged in the the platform as auth.middleware works 
+    
+   const user= User.findById(req.user?.id)
+   const isPasswordCorrect=user.isPasswordCorrect(oldpassword)// return true or false 
+
+   if(!isPasswordCorrect){
+    throw new ApiError(401,"INVALID PASSWORD !!!")
+   }
+
+   // NEW password
+   user.password=newpassword// it is saving so the pre hook has to run this is set not saved 
+   await user.save({validateBeforeSave:false}) // db 
+
+   return res
+   .status(200)
+   .json(
+    new ApiResponse(200, {}, "Password change successfully !!")
+   )
+    
+})
+
+// we need to get current the user!! we have the middleware if loggedin 
+const getcurrentuser=asyncHandler(async(req,res)=>{
+    return res
+    .status(200)
+    .json(200,req.user,"current user fetched successfully!! ")
+}) 
+
+const updateaccountdetails=asyncHandler(async(req,res)=>{
+    const {username,email}=req.body
+
+    if(!username || !email){
+        throw new ApiError(400,"ALL THE FIELDS ARE REQUIRED !! ")
+    }
+
+    const user=User.findByIdAndUpdate(
+        req.user?.id,
+    {
+        // here to write the operator mongo db operators
+        $set:{
+            username:username,
+            email:email
+        }
+    },
+    {
+        new:true// after update the new info returns 
+    }
+  ).select("-password")
+
+  return res
+  .status(200)
+  .json(new ApiResponse(200,user,"ACCOUNT DETAILS UPDATED SUCESSFULLY!!"))
+
+})
+
+// for files update we will use the multer middleware 
+// const updateuseravatar=asyncHandler(async(req,res)=>{
+//     const avatarlocalPath=req.file?.path
+    
+// })
+
 export { registeruser, loginUser,logoutUser ,
-    refreshaccesstoken
+    refreshaccesstoken,
+    changecurrentpassword,
+    getcurrentuser,
+    updateaccountdetails
+
 };

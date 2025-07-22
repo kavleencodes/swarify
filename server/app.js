@@ -47,6 +47,9 @@ import userrouter from "./src/routes/user.routes.js"
 
 app.use("/api/v1/users",userrouter)// after these all the methods are written in the routes file // method to define api 
 
+import watchHistoryRoutes from "./src/routes/watchHistory.routes.js"
+app.use("/api/history", watchHistoryRoutes);
+
 
 
 export default app
