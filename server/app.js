@@ -45,11 +45,12 @@ import userrouter from "./src/routes/user.routes.js"
 //roues declaration 
 // app.get when router does not get export and in the same file middleware is used
 
-app.use("/api/v1/users",userrouter)// after these all the methods are written in the routes file // method to define api 
+app.use("/api/users",userrouter)// after these all the methods are written in the routes file // method to define api 
 
 import watchHistoryRoutes from "./src/routes/watchHistory.routes.js"
 app.use("/api/history", watchHistoryRoutes);
 
-
+import spotifyRoutes from "./src/routes/spotify.routes.js"
+app.use("/api/spotify", spotifyRoutes);
 
 export default app
