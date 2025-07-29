@@ -58,6 +58,7 @@ import { Router } from "express";
 import { registeruser ,loginUser,logoutUser,refreshaccesstoken} from "../controllers/user.controller.js";
 import { upload } from "../middleware/multer.middleware.js";
 import { verifyJWT } from "../middleware/auth.middleware.js";
+import User from "../models/user.models.js"
 
 const router = Router();
 
@@ -67,6 +68,25 @@ router.route("/healthcheck").get((req, res) => {
     res.status(200).send("Server is alive and responding!");
 });
 // -------------------------
+// router.get("/", (req, res) => {
+//     res.status(200).json({ message: "Users API root reached!" });
+//   });
+
+// router.get("/", getAllUsers);
+router.get("/", async (req, res) => {
+    try {
+      const users = await User.find().select("-password");
+      res.status(200).json({
+        success: true,
+        count: users.length,
+        users
+      });
+    } catch (error) {
+      console.error("🔥 Error while fetching users:", error); // 👈 add this
+      res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+  });
+  
 
 router.route("/register").post(
     upload.fields([

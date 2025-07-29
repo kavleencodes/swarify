@@ -5,6 +5,23 @@ import uploadoncloud from "../utils/cloudinary.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken"
 
+
+
+// export const getAllUsers = async (req, res) => {
+//   try {
+//     const users = await User.find().select("-password"); // Exclude password for security
+//     res.status(200).json({
+//       success: true,
+//       count: users.length,
+//       users
+//     });
+//   } catch (err) {
+//     console.error("Error fetching users:", err);
+//     res.status(500).json({ success: false, message: "Server Error" });
+//   }
+// };
+
+
 const generateAccessAndRefereshTokens = async(userId) =>{
     try {
         const user = await User.findById(userId)

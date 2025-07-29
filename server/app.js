@@ -37,7 +37,11 @@ app.use(express.static("public"))// alredy this folder is made with gitkeep
 // now cookieparser - user server cookies to be set and crud operations can be performed 
 app.use(cookieParser())
 
-
+// Optional base route to test server is running
+app.get("/", (req, res) => {
+    res.send("API is running 🚀");
+  });
+  
 
 //routes import 
 import userrouter from "./src/routes/user.routes.js"
@@ -51,6 +55,6 @@ import watchHistoryRoutes from "./src/routes/watchHistory.routes.js"
 app.use("/api/history", watchHistoryRoutes);
 
 import spotifyRoutes from "./src/routes/spotify.routes.js"
-app.use("/api/spotify", spotifyRoutes);
+app.use("/api", spotifyRoutes);
 
 export default app

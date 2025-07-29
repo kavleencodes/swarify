@@ -5,6 +5,8 @@ import { verifyJWT } from "../middleware/auth.middleware.js";
 
 const router = Router();
 
-router.get("/search", verifyJWT, searchSpotify);
+// router.get("/search", verifyJWT, searchSpotify);
+router.get("/search",  searchSpotify);
+
 
 export default router;

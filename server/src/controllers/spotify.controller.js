@@ -1,10 +1,9 @@
-// controllers/spotify.controller.js
 import axios from "axios";
 import { getSpotifyAccessToken } from "../utils/spotifyAuth.js";
 
 export const searchSpotify = async (req, res) => {
   try {
-    const { query, type } = req.query; // type: 'track' or 'artist'
+    const { query, type } = req.query;
     const token = await getSpotifyAccessToken();
 
     const response = await axios.get(`https://api.spotify.com/v1/search`, {
@@ -13,11 +12,25 @@ export const searchSpotify = async (req, res) => {
       },
       params: {
         q: query,
-        type: type || "track", // default to 'track'
+        type: type || "track",
         limit: 10,
       },
     });
 
+    // 👇 Simplify only for track search
+    if (type === "track" || !type) {
+      const simplifiedTracks = response.data.tracks.items.map((track) => ({
+        trackName: track.name,
+        artists: track.artists.map((artist) => artist.name).join(", "),
+        albumName: track.album.name,
+        image: track.album.images[0]?.url || "",
+        previewUrl: track.preview_url, // 30-second preview URL
+      }));
+
+      return res.status(200).json({ tracks: simplifiedTracks });
+    }
+
+    // Default: return full raw data for non-track types
     res.status(200).json(response.data);
   } catch (error) {
     console.error("Spotify Search Error:", error.response?.data || error.message);
