@@ -3,7 +3,9 @@ import { getSpotifyAccessToken } from "../utils/spotifyAuth.js";
 
 export const searchSpotify = async (req, res) => {
   try {
-    const { query, type } = req.query;
+    // const { query, type } = req.query;
+    const { q: query, type } = req.query;
+
     const token = await getSpotifyAccessToken();
 
     const response = await axios.get(`https://api.spotify.com/v1/search`, {
@@ -13,7 +15,7 @@ export const searchSpotify = async (req, res) => {
       params: {
         q: query,
         type: type || "track",
-        limit: 10,
+        limit: 8,
       },
     });
 
