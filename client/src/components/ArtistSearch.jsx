@@ -1,96 +1,84 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './ArtistSearch.module.css';
 
 export default function ArtistSearch() {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [selectedArtist, setSelectedArtist] = useState(null);
-  const [topTracks, setTopTracks] = useState([]);
+  const [error, setError] = useState(null);
 
-  // Fetch artist suggestions on typing
   useEffect(() => {
     if (query.length < 2) {
       setSuggestions([]);
       return;
     }
 
-    const fetchSuggestions = async () => {
-      try {
-        const res = await fetch(
-          `https://cors-anywhere.herokuapp.com/https://api.deezer.com/search/artist?q=${query}`
-        );
-        const data = await res.json();
-        setSuggestions(data.data);
-      } catch (error) {
-        console.error('Error fetching artist suggestions:', error);
-      }
-    };
+    const delayDebounce = setTimeout(() => {
+      const fetchArtists = async () => {
+        setError(null);
+        try {
+          const res = await fetch(`/api/search?query=${encodeURIComponent(query)}`);
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Failed to fetch');
 
-    const timer = setTimeout(fetchSuggestions, 300); // debounce
-    return () => clearTimeout(timer);
+          setSuggestions(data.artists.items); // Adjust based on your backend's shape
+        } catch (err) {
+          setError(err.message);
+          console.error('Error fetching artists:', err);
+        }
+      };
+
+      fetchArtists();
+    }, 500);
+
+    return () => clearTimeout(delayDebounce);
   }, [query]);
 
-  // On artist click → fetch top tracks
-  const handleArtistClick = async (artist) => {
+  const handleArtistClick = (artist) => {
     setSelectedArtist(artist);
     setQuery(artist.name);
     setSuggestions([]);
-
-    try {
-      const res = await fetch(
-        `https://cors-anywhere.herokuapp.com/https://api.deezer.com/artist/${artist.id}/top?limit=10`
-      );
-      const data = await res.json();
-      setTopTracks(data.data);
-    } catch (error) {
-      console.error('Error fetching top tracks:', error);
-    }
   };
 
   return (
-    <div className={styles.artistSearchWrapper}>
+    <div className={styles.wrapper}>
       <h2 className={styles.heading}>🎤 Search by Artist</h2>
-
       <input
         type="text"
+        placeholder="Start typing an artist name..."
+        className={styles.input}
         value={query}
         onChange={(e) => {
           setQuery(e.target.value);
           setSelectedArtist(null);
-          setTopTracks([]);
         }}
-        placeholder="Type artist name..."
-        className={styles.input}
       />
-
+      {error && <p className={styles.errorText}>{error}</p>}
       {suggestions.length > 0 && (
-        <ul className={styles.suggestionsList}>
+        <ul className={styles.suggestions}>
           {suggestions.map((artist) => (
             <li
               key={artist.id}
               className={styles.suggestionItem}
               onClick={() => handleArtistClick(artist)}
             >
+              {artist.images[2] && (
+                <img
+                  src={artist.images[2].url}
+                  alt={artist.name}
+                  className={styles.artistImage}
+                />
+              )}
               {artist.name}
             </li>
           ))}
         </ul>
       )}
-
       {selectedArtist && (
-        <div className={styles.resultsSection}>
+        <div className={styles.results}>
           <h3 className={styles.artistTitle}>
-            Top Tracks by <span className={styles.highlight}>{selectedArtist.name}</span>
+            Showing results for <span className={styles.highlight}>{selectedArtist.name}</span>
           </h3>
-
-          <ul className={styles.tracksList}>
-            {topTracks.map((track) => (
-              <li key={track.id} className={styles.trackCard}>
-                <p className={styles.trackTitle}>{track.title}</p>
-                <audio controls src={track.preview} className={styles.audio}></audio>
-              </li>
-            ))}
-          </ul>
         </div>
       )}
     </div>

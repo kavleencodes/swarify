@@ -1,0 +1,28 @@
+.logo {
+    font-family: 'Pacifico', cursive;
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    color: #ff4f81; /* Swar */
+    position: relative;
+  }
+  
+  .logo::after {
+    content: 'ify';
+    color: #6a5acd; /* -ify in purple */
+  }
+  
+  .mic {
+    color: #facc15; /* mic icon in yellow */
+    animation: micBounce 2s infinite ease-in-out;
+  }
+  
+  /* Optional: Add mic bounce animation if not already present globally */
+  /* @keyframes micBounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  } */
+  

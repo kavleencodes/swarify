@@ -1,77 +1,43 @@
-
-
-// import './App.css'
-// import SwarifyLogo from './components/SwarifyLogo'
-// import Options from './components/Options';
-// import Login from './components/Login';
+// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// import Options from './components/Options.jsx';
+// import Login from './components/Login.jsx';
+// import Dashboard from './components/dashboard.jsx';
 
 // function App() {
-
-//   const [showMainContent,setShowMainContent]=useState(false)
-
-//   useEffect(()=>{
-//     const timer =setTimeout(()=>{
-//       setShowMainContent(true);
-//     },2500);
-//     return ()=>clearTimeout(timer)
-//   },[]);
-  
-
 //   return (
-//     <>
-//       {/* <SwarifyLogo/> */}
-
-//       {!showMainContent ?(
-//         <SwarifyLogo/>
-//       ):(
-//         <Login/>
-//       )}
-//     </>
-//   )
+//     <Router>
+//       <Routes>
+//         <Route path="/" element={<Options />} />
+//         <Route path="/login" element={<Login />} />
+//         <Route path="/dashboard" element={<Dashboard />} />
+//       </Routes>
+//     </Router>
+//   );
 // }
 
-// export default App
-
-
-import { useState, useEffect } from 'react';
-import './App.css';
-import SwarifyLogo from './components/SwarifyLogo';
-import Options from './components/Options';
-import Login from './components/Login';
-import Signup from './components/Signup';
-import ArtistSearch from './components/ArtistSearch';
+// export default App;
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import SwarifyLogo from './components/SwarifyLogo.jsx';
+import Options from './components/Options.jsx';
+import Login from './components/Login.jsx';
+import Signup from './components/Signup.jsx';
+import Dashboard from './components/dashboard.jsx';
+import Search from './components/Search.jsx';
 
 function App() {
-  const [screen, setScreen] = useState('logo');
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setScreen('options');
-    }, 2500);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <>
-      {screen === 'logo' && <SwarifyLogo />}
-      {screen === 'options' && (
-        <Options onOptionClick={() => setScreen('login')} />
-      )}
-      {screen === 'login' && (
-        <Login onSignupClick={() => setScreen('signup')} />
-      )}
-      {screen === 'signup' && (
-        <Signup onLoginClick={() => setScreen('login')} />
-      )}
-
-
-      {/* <ArtistSearch/> */}
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Options />} />
+        {/* <Route path="/options" element={<Options />} /> */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/search" element={<Search />} />
+      </Routes>
+    </Router>
   );
 }
 
 export default App;
-
-
-
 

@@ -1,42 +1,33 @@
+import { useNavigate } from 'react-router-dom';
 import styles from './Options.module.css';
+import style from './Login.module.css';
 
-// export default function Options() {
-//   return (
-//     <div className={styles.optionsWrapper}>
-//       <h2 className={styles.heading}>What would you like to explore?</h2>
 
-//       <div className={styles.cardContainer}>
-//         <div className={styles.optionCard}>
-//           <span role="img" aria-label="artist" className={styles.emoji}>🎤</span>
-//           <p className={styles.cardText}>Search by Artist</p>
-//         </div>
+export default function Options() {
+  const navigate = useNavigate();
 
-//         <div className={styles.optionCard}>
-//           <span role="img" aria-label="song" className={styles.emoji}>🎵</span>
-//           <p className={styles.cardText}>Search by Song</p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
+  const handleOptionClick = () => {
+    navigate('/login');
+  };
 
-export default function Options({ onOptionClick }) {
   return (
     <div className={styles.optionsWrapper}>
-      <h2 className={styles.heading}>What would you like to explore?</h2>
+      <h2 className={styles.heading}></h2>
+      <div className={style.logo}>
+              Swar<span className={style.mic}>🎤</span>
+            </div>
 
       <div className={styles.cardContainer}>
-        <div className={styles.optionCard} onClick={onOptionClick}>
+        <div className={styles.optionCard} onClick={handleOptionClick}>
           <span className={styles.emoji}>🎤</span>
-          <p className={styles.cardText}>Search by Artist</p>
+          <p className={styles.cardText}>Search...</p>
         </div>
 
-        <div className={styles.optionCard} onClick={onOptionClick}>
+        {/* <div className={styles.optionCard} onClick={handleOptionClick}>
           <span className={styles.emoji}>🎵</span>
           <p className={styles.cardText}>Search by Song</p>
-        </div>
+        </div> */}
       </div>
     </div>
   );
 }
-
