@@ -16,7 +16,9 @@ const app=express()
 
 app.use(cors({
     origin:process.env.CORS_ORIGIN,
-    credentials:true
+    credentials:true,
+    allowedHeaders: ["Content-Type", "Authorization"], // allow JWT headers
+    methods: ["GET", "POST", "PUT", "DELETE"], 
 }))
 
 // data is to be coming so some required and json required 
@@ -56,5 +58,8 @@ app.use("/api/history", watchHistoryRoutes);
 
 import spotifyRoutes from "./src/routes/spotify.routes.js"
 app.use("/api", spotifyRoutes);
+
+import songRoutes from "./src/routes/song.routes.js"
+app.use("/api",songRoutes)
 
 export default app
