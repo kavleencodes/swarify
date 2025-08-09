@@ -2,6 +2,7 @@
 import styles from './Login.module.css';
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
+import { Link } from "react-router-dom";
 
 
 export default function Login({ onSignupClick }) {
@@ -91,6 +92,10 @@ export default function Login({ onSignupClick }) {
           Don’t have an account?{' '}
           <span className={styles.link} onClick={onSignupClick}>Sign up</span>
         </p> */}
+        <p className={styles.subText}>
+          Don’t have an account?{' '}
+          <Link to="/signup" className={styles.link}>Sign up</Link>
+        </p>
       </div>
     </div>
   );

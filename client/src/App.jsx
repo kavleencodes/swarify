@@ -17,7 +17,7 @@
 
 // export default App;
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import SwarifyLogo from './components/SwarifyLogo.jsx';
+
 import Options from './components/Options.jsx';
 import Login from './components/Login.jsx';
 import Signup from './components/Signup.jsx';
@@ -29,13 +29,16 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Options />} />
-        {/* <Route path="/options" element={<Options />} /> */}
+        
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/search" element={<Search />} />
+        
+
       </Routes>
     </Router>
+    
   );
 }
 

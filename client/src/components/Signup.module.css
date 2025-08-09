@@ -102,6 +102,27 @@
 .link:hover {
   text-shadow: 0 0 6px #ff4f81;
 }
+.fileLabel {
+  display: inline-block;
+  background-color: #ff4f81; /* Accent Blue */
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-bottom: 10px;
+}
+
+.fileLabel:hover {
+  background-color: #2563eb; /* Button hover */
+  transform: scale(1.02);
+}
+
+.fileLabel input[type="file"] {
+  display: none; /* hide ugly default input */
+}
 
 @keyframes fadeIn {
   from {
